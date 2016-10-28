@@ -12,12 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
 	@Autowired
-	PostService postService;
+	PostService service;
 
 	@RequestMapping(path = "/{time}", method = RequestMethod.POST)
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public void send(@PathVariable("time") Long time) {
-		postService.sendWelcomePackage(time);
+		service.sendWelcomePackage(time);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE)
+	@ResponseStatus(code = HttpStatus.OK)
+	public void resetStatistics() {
+		service.resetStatistics();
+	}
+
+	@RequestMapping(method = RequestMethod.PUT)
+	@ResponseStatus(code = HttpStatus.OK)
+	public void printStatistics() {
+		service.printStatistics();
 	}
 
 }
