@@ -26,10 +26,10 @@ public class PostController {
 		service.resetStatistics();
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
 	@ResponseStatus(code = HttpStatus.OK)
-	public void printStatistics() {
-		service.printStatistics();
+	@RequestMapping(path = "/{threads}/{sleep}", method = RequestMethod.PUT)
+	public void printStatistics(@PathVariable("threads") Integer threads, @PathVariable("sleep") Integer sleep) {
+		service.printStatistics(threads, sleep);
 	}
 
 }
