@@ -11,14 +11,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 
+	private static final Long BASE_TIME = 379089900000l;
+
 	private Log logger = LogFactory.getLog(PostService.class);
 
-	AtomicInteger counter = new AtomicInteger();
-	AtomicLong average = new AtomicLong();
+	private AtomicInteger counter = new AtomicInteger();
+	private AtomicLong average = new AtomicLong();
+	private Long serverDiff;
 
 	public void sendWelcomePackage(Long time) {
 		counter.incrementAndGet();
-		average.accumulateAndGet(new Date().getTime() - time, (n, m) -> (n + m) / (n == 0 || m == 0 ? 1 : 2));
+		average.accumulateAndGet(new Date().getTime() - time + serverDiff,
+				(n, m) -> (n + m) / (n == 0 || m == 0 ? 1 : 2));
 	}
 
 	public void printStatistics(Integer threads, Integer sleep) {
@@ -29,6 +33,11 @@ public class PostService {
 	public void resetStatistics() {
 		counter.set(0);
 		average.set(0);
+	}
+
+	public void syncTime(Long remoteDiff) {
+		long localDiff = System.currentTimeMillis() - BASE_TIME;
+		serverDiff = remoteDiff - localDiff;
 	}
 
 }

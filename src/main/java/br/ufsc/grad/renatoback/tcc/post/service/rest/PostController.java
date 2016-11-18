@@ -40,4 +40,10 @@ public class PostController {
 		System.out.println("Nano time: " + new Date().getTime());
 	}
 
+	@ResponseStatus(code = HttpStatus.OK)
+	@RequestMapping(path = "/sync/{time}", method = RequestMethod.PUT)
+	public void syncTime(@PathVariable("time") Long time) {
+		service.syncTime(time);
+	}
+
 }
